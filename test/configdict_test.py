@@ -66,10 +66,10 @@ def test_override_file():
     assert database == 'demo-dev'
 
 
-# -- Command line overrides
+# -- Command line overwrites
 
 def test_command_line_overrides():
-    cfg = config_load(Path('config'), overrides={'db': 'db-test'})
+    cfg = config_load(Path('config'), overwrites={'db': 'db-test'})
     assert cfg
 
     database = cfg.section('db').get('database')
@@ -79,7 +79,7 @@ def test_command_line_overrides():
 # -- Secrets
 
 def test_secrets():
-    cfg = config_load(Path('config'), overrides={'db': 'db-test'}, secrets='secrets')
+    cfg = config_load(Path('config'), overwrites={'db': 'db-test'}, secrets='secrets')
     assert cfg
 
     database = cfg.section('db').get('database')

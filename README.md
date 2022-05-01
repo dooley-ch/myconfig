@@ -117,3 +117,64 @@ The function takes the following parameters:
 The test script contains example of how to call the function.
 
 ## Example
+
+A very common use case is to define the database connection and to overwrite it in running the test suite. The first 
+step is to indicate the package that the database details must be included in the final composition.  This is done by
+indicating that the database definition must be included in the compostion.  This is done by adding the instruction to
+the composition secton in the core.toml file:
+
+```
+    [composition]
+        includes = ['logging', 'db']
+        overrides = {db = 'db-dev'}
+```
+
+The instruction to load the db files is listed in the includes attributed and so the following will be included in the
+final composition:
+
+```
+    host = '127.0.0.1'
+    port = 3306
+    user = 'user'
+    password = 'password'
+    database = 'demo-prod'
+```
+
+so at this point the entry will looks like this:
+
+```
+    [db]
+    host = '127.0.0.1'
+    port = 3306
+    user = 'user'
+    password = 'password'
+    database = 'demo-prod'
+```
+
+The next step is to switch to the development database, this is done by providing an overwrite instucion through the 
+composition section in the core file.  Once that step is applied the entry looks like this:
+
+```
+    [db]
+    host = '127.0.0.1'
+    port = 3306
+    user = 'user'
+    password = 'password'
+    database = 'demo-dev'
+```
+
+The final step is to apply the secrets file in order to provide the correct connection details.  After this the entry
+will look like this:
+
+```
+    [db]
+    host = '127.0.0.1'
+    port = 3306
+    user = 'dev-user'
+    password = 'dev-password'
+    database = 'demo-dev'
+```
+
+## Security
+
+To protect your secrets, don't check it into version control.

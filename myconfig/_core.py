@@ -63,20 +63,22 @@ def _load_config_file(file: Path) -> dict[str, Any]:
         return tomli.load(f)
 
 
-def config_load(config_folder: str | Path | None = None, overrides: dict[str, str] | None = None,
+def config_load(config_folder: str | Path | None = None, overwrites: dict[str, str] | None = None,
         secrets: str | Path | None = None) -> ConfigDict:
     """
     This function populates a ConfigParser based on the configuration information stored in the
     config_folder in toml format
     :param config_folder: The folder where the configuration information is stored
-    populate the ConfigParser
-    :param overrides: This list of overrides replace andy defined in the core config file
-    :param secrets:
-    :return: A populated ConfigParser object
+    to populate the ConfigDict.  If None the package searches for a folcer called configd located in the
+    working folder
+    :param overwrites: This list of overrides replace any already defined in the core config file
+    :param secrets: The name of the file where the application secrets are stored.  If none, the package tries to use
+    a file called secrets.toml in the config folder
+    :return: A populated ConfigDict object
     """
     config_folder = _get_config_folder(config_folder)
-    if overrides is None:
-        overrides = dict()
+    if overwrites is None:
+        overwrites = dict()
 
     core = _load_config_file(config_folder.joinpath('core.toml'))
 
@@ -93,10 +95,10 @@ def config_load(config_folder: str | Path | None = None, overrides: dict[str, st
                 core[name] = data
 
         # Apply override files
-        file_overrides: dict[str, Any] = composition.get('overrides')
+        file_overrides: dict[str, Any] = composition.get('overwrites')
         if file_overrides:
             for name, file_name in file_overrides.items():
-                if name in overrides:
+                if name in overwrites:
                     continue
 
                 file = config_folder.joinpath(f"{file_name}.toml")
@@ -106,8 +108,8 @@ def config_load(config_folder: str | Path | None = None, overrides: dict[str, st
                 current_data.update(data)
 
         # Apply command line override files
-        if overrides:
-            for name, file_name in overrides.items():
+        if overwrites:
+            for name, file_name in overwrites.items():
                 file = config_folder.joinpath(f"{file_name}.toml")
                 data = _load_config_file(file)
 
