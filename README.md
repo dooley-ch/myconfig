@@ -1,2 +1,14 @@
-# myconfig
-Yet to come
+# MyConfig
+
+![Splash](splash.jpg)
+
+## Introduction
+
+## Installation
+
+## Config Structure
+
+## Usage
+
+## API
+
