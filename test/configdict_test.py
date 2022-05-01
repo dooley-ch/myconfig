@@ -21,14 +21,17 @@ from pathlib import Path
 from myconfig import config_load
 from myconfig.errors import ConfigFolderError
 
+
 # --- Folder
 
 def test_valid_folder():
     assert config_load('config')
 
+
 def test_invalid_folder():
     with pytest.raises(ConfigFolderError):
         assert config_load('wrong_config')
+
 
 # -- Core file
 
@@ -39,10 +42,11 @@ def test_core_file():
     version = cfg.get('version')
     assert version == '1.0.1'
 
+
 # -- Include files
 
 def test_include_file():
-    cfg  = config_load(Path('config'))
+    cfg = config_load(Path('config'))
     assert cfg
 
     data = cfg.section('db').get('port')
@@ -50,6 +54,7 @@ def test_include_file():
 
     with pytest.raises(ValueError):
         cfg.get('logging')
+
 
 # -- Override files
 
@@ -60,6 +65,7 @@ def test_override_file():
     database = cfg.section('db').get('database')
     assert database == 'demo-dev'
 
+
 # -- Command line overrides
 
 def test_command_line_overrides():
@@ -68,6 +74,7 @@ def test_command_line_overrides():
 
     database = cfg.section('db').get('database')
     assert database == 'demo-test'
+
 
 # -- Secrets
 

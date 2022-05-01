@@ -11,7 +11,7 @@
 # *******************************************************************************************
 
 """
-This package supports the use of toml to configure a ConfigParser object
+This package supports the use of toml to provide condiguration information for an application
 """
 
 __author__ = "James Dooley"

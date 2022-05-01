@@ -37,5 +37,7 @@ class ConfigFolderError(_MyConfigError):
 
 
 class SectionNotFound(_MyConfigError):
+    """
+    This error is rasied when a requsted section is not defined in the provided configuration information
+    """
     pass
-

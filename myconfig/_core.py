@@ -10,6 +10,11 @@
 #
 # *******************************************************************************************
 
+"""
+This module implements the main function of the library: config_load, which is responsible for loading and
+returning the configuration information
+"""
+
 __author__ = "James Dooley"
 __license__ = "MIT"
 __version__ = "1.0.0"
@@ -59,7 +64,7 @@ def _load_config_file(file: Path) -> dict[str, Any]:
 
 
 def config_load(config_folder: str | Path | None = None, overrides: dict[str, str] | None = None,
-        secrets: str | Path | None = None) -> dict[str, Any]:
+        secrets: str | Path | None = None) -> ConfigDict:
     """
     This function populates a ConfigParser based on the configuration information stored in the
     config_folder in toml format
