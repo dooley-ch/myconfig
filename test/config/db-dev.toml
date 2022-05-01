@@ -1,0 +1,15 @@
+# *******************************************************************************************
+#  File:  core.toml
+#
+#  Created: 29-04-2022
+#
+#  Description: This file defines the database connection
+#
+#  Copyright (c) 2022 James Dooley <james@dooley.ch>
+#
+#  History:
+#  29-04-2022: Initial version
+#
+# *******************************************************************************************
+
+database = 'demo-dev'
