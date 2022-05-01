@@ -40,9 +40,9 @@ The package relies on a main file called core.toml, this file has two functions:
 The section that defines how the configuration is constructed is called 'composition' and looks like this:
 
 ```
-[composition]
-    includes = ['logging', 'db']
-    overrides = {db = 'db-dev'}
+    [composition]
+        includes = ['logging', 'db']
+        overrides = {db = 'db-dev'}
 ```
 The section has two entries, one called 'includes', which tells the package which files need to be included in the
 final configuration data object.  And one called 'overrides' which tells the package how to override the contents of
@@ -57,8 +57,63 @@ config folder and if found loads the file into a section of the same name in the
 
 ### Overwrite Files
 
+In addition to handling include files the package also supports overrite files.  The package takes the overrides 
+describe above and tries to file with the value given in the dictionary in the config folder.  If the exists it is
+loaded and used to update a section in the configuraton information with the name of the key provided by the overrite
+collection.
 
 ### Parameter Override
 
+In addition to the overwrite files, the package is capable of dynamically loading overwrite files at runtime via a 
+parameter of the load function.
+
+```python
+    def config_load(config_folder: str | Path | None = None, overrides: dict[str, str] | None = None,
+            secrets: str | Path | None = None) -> ConfigDict:
+```
+### Secrets 
+
+When composing the configuration information the last step is to apply the contents of the secrets file to the sections
+in the final composition.  The package searches for a file called secrets.toml in the config folder and if found it is 
+loaded and applied to the final composition.  The secrets file contains a series of entries using the same section names.
+The package iterates over them and does an update of each section in the composition using the contents of the secrets
+file.
+
+For example, the following enter for the database credentials would be defined in the secrets file:
+
+```
+    [db]
+    user = 'root'
+    password = 'root*347'
+```
+
 ## Usage
 
+Once the package has been installed in the application, the next step is to import the package:
+
+```python
+import myconfig
+```
+or 
+```python
+from myconfig import config_load, ConfigDict
+```
+
+To obtain the config information in the application make a call to the function:
+
+```python
+def config_load(config_folder: str | Path | None = None, overwrites: dict[str, str] | None = None,
+            secrets: str | Path | None = None) -> ConfigDict:
+```
+
+The function takes the following parameters:
+
+| Parameter     | Data Type            | Default | Comment                                                                                                                                                                        |
+|---------------|----------------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| config_folder | str or Path or None  | None    | The name of the folder where the config information is stored.  If None, the package tries to load the config information from the config folder located in the working folder |
+| overwrites    | dict[str, str]       | None    | A dictionary containing the parameterised overwrites                                                                                                                           |
+| secrets       | str or Path  or None | None    | The name of an alternative secrets file to use.  If None, the package searches for a file called secrets.toml located inthe config folder                                      |
+
+The test script contains example of how to call the function.
+
+## Example
